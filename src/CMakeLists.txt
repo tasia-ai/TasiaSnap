@@ -297,8 +297,10 @@ elseif (UNIX)
         # it is easy to spot.
         target_compile_definitions(ksnip PRIVATE UNIX_X11)
 elseif (WIN32)
+        if (NOT BUILD_WITH_QT6)
+                list(APPEND DEPENDENCY_LIBRARIES Qt${QT_MAJOR_VERSION}::WinExtras)
+        endif()
         list(APPEND DEPENDENCY_LIBRARIES
-                Qt${QT_MAJOR_VERSION}::WinExtras
 				kImageAnnotator::kImageAnnotator
                 kColorPicker
                 Dwmapi
