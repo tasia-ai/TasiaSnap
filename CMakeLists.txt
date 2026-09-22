@@ -61,7 +61,7 @@ endif()
 
 if (X11_FOUND AND NOT BUILD_WITH_QT6)
 	list(APPEND QT_COMPONENTS X11Extras)
-elseif (WIN32)
+elseif (WIN32 AND NOT BUILD_WITH_QT6)
 	list(APPEND QT_COMPONENTS WinExtras)
 endif()
 
