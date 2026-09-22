@@ -19,6 +19,8 @@
 
 #include "WinWrapper.h"
 
+#include <vector>
+
 QRect WinWrapper::getFullScreenRect() const
 {
     auto height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
@@ -81,7 +83,26 @@ QPixmap WinWrapper::getCursorPixmap(const CURSORINFO &cursor) const
     DrawIcon(memoryHandle, 0, 0, cursor.hCursor);
 
     // Convert to QPixmap
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // Qt6: QtWinExtras was removed, convert the HBITMAP via GetDIBits.
+    QPixmap cursorPixmap;
+    if (cursorWidth > 0 && cursorHeight > 0) {
+        BITMAPINFO info{};
+        info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+        info.bmiHeader.biWidth = cursorWidth;
+        info.bmiHeader.biHeight = -cursorHeight; // top-down DIB
+        info.bmiHeader.biPlanes = 1;
+        info.bmiHeader.biBitCount = 32;
+        info.bmiHeader.biCompression = BI_RGB;
+        std::vector<uchar> buffer(cursorWidth * cursorHeight * 4);
+        if (GetDIBits(memoryHandle, canvasBitmap, 0, cursorHeight, buffer.data(), &info, DIB_RGB_COLORS) == cursorHeight) {
+            QImage image(buffer.data(), cursorWidth, cursorHeight, cursorWidth * 4, QImage::Format_ARGB32).copy();
+            cursorPixmap = QPixmap::fromImage(image);
+        }
+    }
+#else
     auto cursorPixmap = fromHBITMAP(canvasBitmap, QtWin::HBitmapAlpha);
+#endif
 
     // Clean up after yourself.
     SelectObject(memoryHandle, oldBitmap);
