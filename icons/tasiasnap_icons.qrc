@@ -1,8 +1,8 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/icons">
-    <file>ksnip.svg</file>
+    <file>tasiasnap.svg</file>
 
-    <file>light/ksnip.svg</file>
+    <file>light/tasiasnap.svg</file>
     <file>light/clock.svg</file>
     <file>light/crop.svg</file>
     <file>light/save.svg</file>
@@ -23,7 +23,7 @@
     <file>light/delete.svg</file>
     <file>light/action.svg</file>
 
-    <file>dark/ksnip.svg</file>
+    <file>dark/tasiasnap.svg</file>
     <file>dark/clock.svg</file>
     <file>dark/crop.svg</file>
     <file>dark/save.svg</file>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- TasiaSnap application icon (Tasia branding) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#94e2d5"/>
+      <stop offset="0.55" stop-color="#89b4fa"/>
+      <stop offset="1" stop-color="#f5c2e7"/>
+    </linearGradient>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e1e2e"/>
+      <stop offset="1" stop-color="#45475a"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="56" fill="url(#bg)"/>
+  <!-- camera body -->
+  <rect x="58" y="96" width="140" height="104" rx="20" fill="#ffffff" opacity="0.95"/>
+  <path d="M100 96 h20 l10 -14 h36 l10 14 h22 v18 h-98 z" fill="#ffffff" opacity="0.95"/>
+  <!-- lens -->
+  <circle cx="128" cy="138" r="34" fill="url(#lens)"/>
+  <circle cx="128" cy="138" r="15" fill="#cba6f7" stroke="#ffffff" stroke-width="4"/>
+  <!-- shutter hint -->
+  <rect x="164" y="104" width="16" height="8" rx="4" fill="#f38ba8"/>
+  <!-- Tasia sparkle -->
+  <path d="M196 52 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5 z" fill="#ffffff"/>
+  <circle cx="66" cy="66" r="7" fill="#ffffff"/>
+</svg>

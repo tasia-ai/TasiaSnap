@@ -31,7 +31,7 @@ TrayIcon::TrayIcon(const QSharedPointer<IConfig> &config, const QSharedPointer<I
 	mQuitAction(nullptr),
 	mActionsMenu(nullptr)
 {
-	auto icon = iconLoader->loadForTheme(QLatin1String("ksnip"));
+	auto icon = iconLoader->loadForTheme(QLatin1String("tasiasnap"));
 	setIcon(icon);
 
 	mShowEditorAction = new QAction(tr("Show Editor"), this);

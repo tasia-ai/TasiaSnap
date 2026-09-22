@@ -20,6 +20,14 @@
 
 #include "MainWindow.h"
 
+#include <QClipboard>
+#include <QGuiApplication>
+#include <QMessageBox>
+#include <QProcess>
+#include <QRegularExpression>
+
+#include "src/common/DavDriveIntegration.h"
+
 MainWindow::MainWindow(DependencyInjector *dependencyInjector) :
 	QMainWindow(),
 	mDependencyInjector(dependencyInjector),
@@ -396,7 +404,7 @@ void MainWindow::initGui()
 {
 	auto iconLoader = mDependencyInjector->get<IIconLoader>();
 
-	setWindowIcon(iconLoader->load(QLatin1String("ksnip")));
+	setWindowIcon(iconLoader->load(QLatin1String("tasiasnap")));
 
 	mToolBar = new MainToolBar(
 			mImageGrabber->supportedCaptureModes(),
@@ -424,6 +432,37 @@ void MainWindow::initGui()
 	mUploadAction->setToolTip(tr("Upload triggerCapture to external source"));
 	mUploadAction->setShortcut(Qt::SHIFT | Qt::Key_U);
 	connect(mUploadAction, &QAction::triggered, this, &MainWindow::upload);
+
+	auto recordAction = new QAction(iconLoader->load(QLatin1String("tasiasnap")), tr("Record short clip (beta)"), this);
+	recordAction->setToolTip(tr("Records ~15 seconds of the screen and uploads it to Dav Drive (beta - keep clips short)"));
+	connect(recordAction, &QAction::triggered, this, [this]() {
+		const auto script = DavDriveIntegration::recorderScriptPath();
+		if (script.isEmpty()) {
+			QMessageBox::warning(this, tr("TasiaSnap - Recorder"), tr("Recorder helper not bundled. Re-download the latest TasiaSnap."));
+			return;
+		}
+		QMessageBox::information(this, tr("TasiaSnap - Recorder"),
+			tr("Recording the full screen for 15 seconds.\n\nBeta feature - keep recordings short, and expect rough edges."));
+		auto process = new QProcess(this);
+		connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, process](int, QProcess::ExitStatus) {
+			const auto output = QString::fromUtf8(process->readAllStandardOutput()) +
+				QString::fromUtf8(process->readAllStandardError());
+			process->deleteLater();
+			const QRegularExpression urlPattern(QStringLiteral("https?://[^[:space:]]+"));
+			const auto match = urlPattern.match(output);
+			if (!match.hasMatch()) {
+				QMessageBox::warning(this, tr("TasiaSnap - Recorder"),
+					tr("Recording failed.\n\n%1").arg(output.trimmed()));
+				return;
+			}
+			const auto url = match.captured(0);
+			QGuiApplication::clipboard()->setText(url);
+			QMessageBox::information(this, tr("TasiaSnap - Recorder"),
+				tr("Clip uploaded:\n%1\n\nLink copied to your clipboard.").arg(url));
+		});
+		process->start(script, { QStringLiteral("15") });
+	});
+	mToolBar->addAction(recordAction);
 
 	mCopyAsDataUriAction->setText(tr("Copy as data URI"));
 	mCopyAsDataUriAction->setToolTip(tr("Copy triggerCapture to system clipboard"));
@@ -486,7 +525,7 @@ void MainWindow::initGui()
 	connect(mSettingsAction, &QAction::triggered, this, &MainWindow::showSettingsDialog);
 
 	mAboutAction->setText(tr("&About"));
-	mAboutAction->setIcon(iconLoader->load(QLatin1String("ksnip")));
+	mAboutAction->setIcon(iconLoader->load(QLatin1String("tasiasnap")));
 	connect(mAboutAction, &QAction::triggered, this, &MainWindow::showAboutDialog);
 
 	mOpenImageAction->setText(tr("Open"));
@@ -546,6 +585,7 @@ void MainWindow::initGui()
 	menu->addAction(mSaveAsAction);
 	menu->addAction(mSaveAllAction);
 	menu->addAction(mUploadAction);
+	menu->insertAction(mUploadAction, recordAction);
 	menu->addSeparator();
 	menu->addAction(mPrintAction);
 	menu->addAction(mPrintPreviewAction);

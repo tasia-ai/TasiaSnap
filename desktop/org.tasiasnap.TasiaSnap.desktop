@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Application
-Exec=/usr/bin/ksnip %F
-Icon=ksnip
+Exec=/usr/bin/TasiaSnap %F
+Icon=TasiaSnap
 Terminal=false
 StartupNotify=false
-Name=ksnip
-GenericName=ksnip Screenshot Tool
+Name=TasiaSnap
+GenericName=TasiaSnap Screenshot Tool
 GenericName[ru]=Создание снимков экрана
 Categories=Utility;
 Actions=Area;LastArea;FullScreen;Window;
@@ -17,24 +17,24 @@ X-KDE-DBUS-Restricted-Interfaces=org.kde.kwin.Screenshot,org.kde.KWin.ScreenShot
 
 [Desktop Action Area]
 Exec=ksnip -r -c
-Icon=ksnip
+Icon=TasiaSnap
 Name=Capture a rectangular area
 Name[ru]=Снимок выделенной области
 
 [Desktop Action LastArea]
 Exec=ksnip -l -c
-Icon=ksnip
+Icon=TasiaSnap
 Name=Capture last selected rectangular area
 Name[ru]=Снимок последней области
 
 [Desktop Action FullScreen]
 Exec=ksnip -m -c
-Icon=ksnip
+Icon=TasiaSnap
 Name=Capture a fullscreen
 Name[ru]=Снимок всего экрана
 
 [Desktop Action Window]
 Exec=ksnip -a -c
-Icon=ksnip
+Icon=TasiaSnap
 Name=Capture the focused window
 Name[ru]=Снимок активного экрана

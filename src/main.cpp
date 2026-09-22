@@ -24,6 +24,7 @@
 
 #include "BuildConfig.h"
 #include "src/bootstrapper/BootstrapperFactory.h"
+#include "src/common/DavDriveIntegration.h"
 #include "src/logging/LogOutputHandler.h"
 
 int main(int argc, char** argv)
@@ -35,11 +36,14 @@ int main(int argc, char** argv)
     QApplication app(argc, argv);
     app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
-    app.setOrganizationName(QLatin1String("ksnip"));
-    app.setOrganizationDomain(QLatin1String("ksnip.ksnip.org"));
-    app.setApplicationName(QLatin1String("ksnip"));
+    app.setOrganizationName(QLatin1String("TasiaSnap"));
+    app.setOrganizationDomain(QLatin1String("org.tasiasnap"));
+    app.setApplicationName(QLatin1String("TasiaSnap"));
     app.setApplicationVersion(QLatin1String(KSNIP_VERSION));
-    app.setDesktopFileName(QLatin1String("org.ksnip.ksnip.desktop"));
+    app.setDesktopFileName(QLatin1String("org.tasiasnap.TasiaSnap.desktop"));
+
+    // One-time Dav Drive setup (asks for the access token on first run).
+    DavDriveIntegration::ensureConfigured();
 
     auto dependencyInjector = new DependencyInjector;
 	DependencyInjectorBootstrapper::BootstrapCore(dependencyInjector);
