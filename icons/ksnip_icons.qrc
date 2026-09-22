@@ -1,0 +1,47 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/icons">
+    <file>ksnip.svg</file>
+
+    <file>light/ksnip.svg</file>
+    <file>light/clock.svg</file>
+    <file>light/crop.svg</file>
+    <file>light/save.svg</file>
+    <file>light/saveAs.svg</file>
+    <file>light/copy.svg</file>
+    <file>light/paste.svg</file>
+    <file>light/pasteEmbedded.svg</file>
+    <file>light/undo.svg</file>
+    <file>light/redo.svg</file>
+    <file>light/currentScreen.svg</file>
+    <file>light/drawRect.svg</file>
+    <file>light/lastRect.svg</file>
+    <file>light/activeWindow.svg</file>
+    <file>light/windowUnderCursor.svg</file>
+    <file>light/fullScreen.svg</file>
+    <file>light/pin.svg</file>
+    <file>light/wayland.svg</file>
+    <file>light/delete.svg</file>
+    <file>light/action.svg</file>
+
+    <file>dark/ksnip.svg</file>
+    <file>dark/clock.svg</file>
+    <file>dark/crop.svg</file>
+    <file>dark/save.svg</file>
+    <file>dark/saveAs.svg</file>
+    <file>dark/copy.svg</file>
+    <file>dark/paste.svg</file>
+    <file>dark/pasteEmbedded.svg</file>
+    <file>dark/undo.svg</file>
+    <file>dark/redo.svg</file>
+    <file>dark/currentScreen.svg</file>
+    <file>dark/drawRect.svg</file>
+    <file>dark/lastRect.svg</file>
+    <file>dark/activeWindow.svg</file>
+    <file>dark/windowUnderCursor.svg</file>
+    <file>dark/fullScreen.svg</file>
+    <file>dark/pin.svg</file>
+    <file>dark/wayland.svg</file>
+    <file>dark/delete.svg</file>
+    <file>dark/action.svg</file>
+</qresource>
+</RCC>
