@@ -45,7 +45,7 @@ jobs:
           mkdir -p stage/ksnip-linux-x64/translations
           cp build/src/ksnip stage/ksnip-linux-x64/
           cp build/translations/*.qm stage/ksnip-linux-x64/translations/
-          cp dav-drive/dav-drive-upload.sh dav-drive/configure-ksnip.sh dav-drive/README.txt stage/ksnip-linux-x64/
+          cp dav-drive/dav-drive-upload.sh dav-drive/configure-ksnip.sh dav-drive/README.txt dav-drive/tasiasnap-record.sh stage/ksnip-linux-x64/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -84,10 +84,9 @@ jobs:
       - name: Stage artifact
         shell: bash
         run: |
-          mkdir -p stage/ksnip-windows-x64/translations
-          cp build/src/Release/ksnip.exe stage/ksnip-windows-x64/
-          cp build/translations/Release/*.qm stage/ksnip-windows-x64/translations/ || true
-          cp dav-drive/configure-ksnip.cmd dav-drive/README.txt dav-drive/dav-drive-upload.sh stage/ksnip-windows-x64/
+          # cmake install runs windeployqt (ksnip install(CODE)) -> Qt DLLs land next to ksnip.exe
+          cmake --install build --config Release --prefix "$PWD/stage/ksnip-windows-x64"
+          cp dav-drive/configure-ksnip.cmd dav-drive/README.txt dav-drive/dav-drive-upload.sh dav-drive/tasiasnap-record.sh stage/ksnip-windows-x64/
 
       - name: Build Dav Drive Windows helpers
         shell: bash
@@ -130,13 +129,15 @@ jobs:
 
       - name: Stage artifact
         run: |
-          mkdir -p stage/ksnip-macos-x64/translations
-          cp build/src/ksnip stage/ksnip-macos-x64/ksnip
-          cp build/translations/*.qm stage/ksnip-macos-x64/translations/
-          cp dav-drive/dav-drive-upload.sh dav-drive/configure-ksnip.sh dav-drive/README.txt stage/ksnip-macos-x64/
+          mkdir -p stage
+          cp -R build/src/TasiaSnap.app stage/
+          "${Qt6_DIR}/bin/macdeployqt" stage/TasiaSnap.app
+          mkdir -p stage/TasiaSnap.app/Contents/MacOS
+          cp dav-drive/dav-drive-upload.sh dav-drive/configure-ksnip.sh dav-drive/README.txt dav-drive/tasiasnap-record.sh stage/TasiaSnap.app/Contents/MacOS/
+          cp build/translations/*.qm stage/TasiaSnap.app/Contents/Resources/ || true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ksnip-macos-x64
-          path: stage/ksnip-macos-x64
+          path: stage/TasiaSnap.app
