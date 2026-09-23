@@ -20,6 +20,10 @@
 #include "AbstractRectAreaImageGrabber.h"
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QGuiApplication>
+#include <QScreen>
+#endif
 #endif
 
 #include <QPainter>
@@ -126,9 +130,14 @@ QPixmap AbstractRectAreaImageGrabber::getScreenshotFromRect(const QRect &rect) c
 	return composed;
 #else
 	auto screen = QGuiApplication::primaryScreen();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	// Qt6: grabWindow(0, ...) grabs the root window; QDesktopWidget was removed.
+	return screen->grabWindow(0, rect.topLeft().x(), rect.topLeft().y(), rect.width(), rect.height());
+#else
 	auto windowId = QApplication::desktop()->winId();
 	auto rectPosition = rect.topLeft();
 	return screen->grabWindow(windowId, rectPosition.x(), rectPosition.y(), rect.width(), rect.height());
+#endif
 #endif
 }
 

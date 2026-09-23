@@ -96,7 +96,7 @@ QPixmap WinWrapper::getCursorPixmap(const CURSORINFO &cursor) const
         info.bmiHeader.biCompression = BI_RGB;
         std::vector<uchar> buffer(cursorWidth * cursorHeight * 4);
         if (GetDIBits(memoryHandle, canvasBitmap, 0, cursorHeight, buffer.data(), &info, DIB_RGB_COLORS) == cursorHeight) {
-            QImage image(buffer.data(), cursorWidth, cursorHeight, cursorWidth * 4, QImage::Format_ARGB32).copy();
+            auto image = QImage(buffer.data(), cursorWidth, cursorHeight, cursorWidth * 4, QImage::Format_ARGB32).copy();
             cursorPixmap = QPixmap::fromImage(image);
         }
     }

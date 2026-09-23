@@ -18,7 +18,12 @@
  */
 
 #include "WinSnippingArea.h"
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QGuiApplication>
+#include <QScreen>
+#else
 #include <QDesktopWidget>
+#endif
 
 WinSnippingArea::WinSnippingArea(const QSharedPointer<IConfig> &config) :
     AbstractSnippingArea(config),
@@ -59,9 +64,15 @@ void WinSnippingArea::setFullScreen()
      */
 
     if (mIsMultipleScaledScreens) {
-        setGeometry(QApplication::desktop()->geometry());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        auto screen = QGuiApplication::primaryScreen();
+        const auto desktopGeometry = screen ? screen->geometry() : QRect();
+#else
+        const auto desktopGeometry = QApplication::desktop()->geometry();
+#endif
+        setGeometry(desktopGeometry);
         QWidget::show();
-        setGeometry(QApplication::desktop()->geometry());
+        setGeometry(desktopGeometry);
     } else if (!mIsFullScreenSizeSet) {
         setGeometry(mFullScreenRect);
         mIsFullScreenSizeSet = true;
