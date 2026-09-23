@@ -1,7 +1,7 @@
 # TasiaSnap — Dav Drive fork of ksnip
 
 Branded fork of [ksnip](https://github.com/ksnip/ksnip) v1.11.0 used to build the
-Dav Drive desktop screenshot app (Windows / macOS / Linux).
+Dav Drive desktop screenshot app (Windows / Linux).
 
 ## Differences from upstream
 
@@ -25,8 +25,8 @@ Dav Drive desktop screenshot app (Windows / macOS / Linux).
   - `src/gui/annotator/tabs/AnnotationTabWidget.h`
 - `dav-drive/` — Dav Drive uploader integration (shell + PowerShell-free
   scripts, Go Windows uploader, README).
-- `.github/workflows/dav-drive.yml` — builds ksnip + Dav Drive helper for the
-  three desktop platforms and publishes them as workflow artifacts.
+- `.github/workflows/dav-drive.yml` — builds ksnip + Dav Drive helper for
+  Linux and Windows and publishes them as workflow artifacts.
 
 ## Local build (Ubuntu 22.04, Qt 6.2.4)
 
@@ -44,7 +44,7 @@ cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
 cmake --build build
 ```
 
-## Dav Drive uploader (Linux/macOS script)
+## Dav Drive uploader (Linux script)
 
 `dav-drive/dav-drive-upload.sh <image>` reads `DAV_DRIVE_HOST`,
 `DAV_DRIVE_TOKEN`, `DAV_DRIVE_FOLDER` from `dav-drive.conf` placed next to it
