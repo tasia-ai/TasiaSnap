@@ -1,0 +1,39 @@
+# Cirrus CI build for TasiaSnap (macOS)
+# GitHub Actions macOS queues are unreliable for public repos; Cirrus
+# provides dedicated Apple Silicon runners for free on public repositories.
+#
+# After the first push, enable this repository once at https://cirrus-ci.com
+# (login with the same GitHub account that owns the repo).
+
+task:
+  name: macOS
+  osx_instance:
+    image: ghcr.io/cirruslabs/macos-ventura-xcode:14
+  env:
+    HOMEBREW_NO_AUTO_UPDATE: "1"
+    HOMEBREW_NO_INSTALL_CLEANUP: "1"
+  install_script:
+    - brew install qt@6 cmake gettext extra-cmake-modules
+  configure_script:
+    - export PATH="$(brew --prefix)/bin:$(brew --prefix)/opt/qt@6/bin:$PATH"
+    - cmake -B build -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6)"
+        -DBUILD_WITH_QT6=ON
+        -DUSE_SUBMODULE_KCOLORPICKER=ON
+        -DUSE_SUBMODULE_KIMAGEANNOTATOR=ON
+        -DBUILD_TESTS=OFF
+  build_script:
+    - export PATH="$(brew --prefix)/bin:$(brew --prefix)/opt/qt@6/bin:$PATH"
+    - cmake --build build --parallel 4
+  package_script:
+    - |
+      set -e
+      mkdir -p stage
+      cp -R build/src/TasiaSnap.app stage/
+      "$(brew --prefix qt@6)/bin/macdeployqt" stage/TasiaSnap.app
+      mkdir -p stage/TasiaSnap.app/Contents/MacOS
+      cp dav-drive/dav-drive-upload.sh dav-drive/configure-ksnip.sh dav-drive/README.txt dav-drive/tasiasnap-record.sh stage/TasiaSnap.app/Contents/MacOS/
+      cp build/translations/*.qm stage/TasiaSnap.app/Contents/Resources/ || true
+  artifacts:
+    path: stage/TasiaSnap.app
+    type: directory
